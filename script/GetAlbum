@@ -1,0 +1,43 @@
+from bs4 import BeautifulSoup
+import requests
+
+import json
+
+
+r = str(25473)
+print(r)
+
+link = 'https://www.discogs.com/master/'
+
+try:
+    
+    linkCompleto = link + r
+
+    header={
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0',
+    'Referer':'http://www.discogs.com'
+        }
+
+    print (linkCompleto)
+
+    source = requests.get(linkCompleto,headers=header)
+    source.raise_for_status()
+        
+    soup = BeautifulSoup(source.content, 'html.parser')
+    
+    Artist = soup.find('h1', class_="title_1q3xW").text
+    a= (Artist.find("–"))
+    s = Artist[:a-1]
+    print(s)
+
+    Album = soup.find('h1', class_="title_1q3xW").text
+    b= (Album.find("–"))
+    t = Album[a+2:]
+    print(t)
+
+    Year = soup.find('time', datetime_="")
+    u = Year.text
+    print(u)
+
+except Exception as e:
+    print(e)

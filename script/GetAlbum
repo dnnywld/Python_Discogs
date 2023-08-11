@@ -2,36 +2,44 @@ from bs4 import BeautifulSoup
 import requests
 import json
 
+# Define the master release ID
 r = str(25473)
 
+# Define the base link for Discogs
 link = 'https://www.discogs.com/master/'
 
 try:
-    
+    # Create the complete link by appending the master release ID
     linkCompleto = link + r
 
+    # Define the headers for the request
     header={
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0',
-    'Referer':'http://www.discogs.com'
-        }
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0',
+        'Referer':'http://www.discogs.com'
+    }
 
-    print (linkCompleto)
+    print(linkCompleto)
 
+    # Send a GET request to the link with headers
     source = requests.get(linkCompleto,headers=header)
     source.raise_for_status()
-        
+
+    # Parse the HTML content using BeautifulSoup
     soup = BeautifulSoup(source.content, 'html.parser')
-    
+
+    # Find the artist name and extract it from the header
     Artist = soup.find('h1', class_="title_1q3xW").text
-    a= (Artist.find("–"))
+    a = (Artist.find("–"))
     s = Artist[:a-1]
     print(s)
 
+    # Find the album title and extract it from the header
     Album = soup.find('h1', class_="title_1q3xW").text
-    b= (Album.find("–"))
+    b = (Album.find("–"))
     t = Album[a+2:]
     print(t)
 
+    # Find the release year and extract it from the <time> tag
     Year = soup.find('time', datetime_="")
     u = Year.text
     print(u)

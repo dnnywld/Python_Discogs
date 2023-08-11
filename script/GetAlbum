@@ -1,11 +1,8 @@
 from bs4 import BeautifulSoup
 import requests
-
 import json
 
-
 r = str(25473)
-print(r)
 
 link = 'https://www.discogs.com/master/'
 
